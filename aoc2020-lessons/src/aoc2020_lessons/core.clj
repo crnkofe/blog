@@ -13,11 +13,46 @@
   "Throws exception later on after actually evaluating code"
   []
   (let [call-lazy-bug (map on-evaluate (range 10))]
-    (println "no exception")
+    (println "it would be nice to see a crash here")
     (try 
       (doall call-lazy-bug)
       (catch Exception e
-        (println "exception caught")
+        (println "but no")
+        )
+      )
+    )
+  )
+
+(defn sequence-speed-demo [n iterations]
+  (loop [some-sequence (range n)
+         steps 0]
+      (if (>= steps iterations)
+        some-sequence
+        (recur (doall (concat (take (/ n 4) some-sequence) (drop (/ n 4) some-sequence))) (inc steps))
+        )
+      )
+    )
+
+
+(defn vector-speed-demo [n iterations]
+  (loop [some-vector (into [] (range n))
+         steps 0]
+      (if (>= steps iterations)
+        some-vector
+        (recur (into (subvec some-vector (/ n 4) n) (subvec some-vector 0 (/ n 4))) (inc steps))
+        )
+      )
+    )
+
+(defn sequence-vector-benchmark []
+  (let [all-ns [1e1 1e2 1e3 1e4 1e5]
+        steps 1e3]
+    (loop [remaining-ns all-ns]
+      (when (not (empty? remaining-ns))
+        (println "n:" (first remaining-ns) "steps:" steps)
+        (time (sequence-speed-demo (first remaining-ns) steps))
+        (time (vector-speed-demo (first remaining-ns) steps))
+        (recur (rest remaining-ns))
         )
       )
     )
@@ -28,4 +63,6 @@
   [& args]
     (println "Lazy evaluation demo:")
     (demo-lazy-bug)
+    (println "Sequence vs. Vectors:")
+    (sequence-vector-benchmark)
   )
