@@ -28,7 +28,7 @@
          steps 0]
       (if (>= steps iterations)
         some-sequence
-        (recur (doall (concat (take (/ n 4) some-sequence) (drop (/ n 4) some-sequence))) (inc steps))
+        (recur (doall (concat (drop (/ n 4) some-sequence) (take (/ n 4) some-sequence))) (inc steps))
         )
       )
     )
