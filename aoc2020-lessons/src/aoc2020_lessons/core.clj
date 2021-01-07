@@ -23,7 +23,7 @@
     )
   )
 
-(defn sequence-speed-demo [n iterations]
+(defn sequence-shuffler [n iterations]
   (loop [some-sequence (range n)
          steps 0]
       (if (>= steps iterations)
@@ -34,7 +34,7 @@
     )
 
 
-(defn vector-speed-demo [n iterations]
+(defn vector-shuffler [n iterations]
   (loop [some-vector (into [] (range n))
          steps 0]
       (if (>= steps iterations)
@@ -50,8 +50,8 @@
     (loop [remaining-ns all-ns]
       (when (not (empty? remaining-ns))
         (println "n:" (first remaining-ns) "steps:" steps)
-        (time (sequence-speed-demo (first remaining-ns) steps))
-        (time (vector-speed-demo (first remaining-ns) steps))
+        (time (sequence-shuffler (first remaining-ns) steps))
+        (time (vector-shuffler (first remaining-ns) steps))
         (recur (rest remaining-ns))
         )
       )
