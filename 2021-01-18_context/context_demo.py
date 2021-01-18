@@ -68,7 +68,6 @@ class CsvFile(object):
             except Exception as e:
                 # if this is rethrown caller needs to handle the exception
                 logging.error("Failed opening file")
-                pass
 
         header = []
         if self.has_header:
