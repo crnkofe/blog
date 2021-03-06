@@ -15,7 +15,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Quart(__name__)
-connected_websockets = set()
 
 
 def is_valid_url(url):
@@ -72,7 +71,6 @@ async def notify_scraped_urls():
         while True:
             try:
                 data = queue.get_nowait()
-                last_sent = datetime.datetime.utcnow()
                 serialized_data = json.dumps(data)
                 await websocket.send(serialized_data)
             except asyncio.QueueEmpty:
