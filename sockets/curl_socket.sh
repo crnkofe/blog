@@ -1,5 +1,5 @@
 #!/bin/bash
-curl --include \
+curl -v -i --trace debug --include \
      --no-buffer \
      --header "Connection: Upgrade" \
      --header "Upgrade: websocket" \
