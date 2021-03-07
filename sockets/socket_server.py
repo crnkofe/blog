@@ -78,7 +78,7 @@ async def notify_scraped_urls():
 
             await asyncio.sleep(1)
     except asyncio.CancelledError:
-        logger.info("Stopping sse loop due to client cancellation")
+        logger.info("Stopping loop due to client cancellation")
         raise
 
 
