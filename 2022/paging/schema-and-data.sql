@@ -1,14 +1,11 @@
-CREATE DATABASE IF NOT EXISTS paging CHARACTER SET 'utf8';
-
-CREATE TABLE IF NOT EXISTS paging.computer (
-	id int NOT NULL AUTO_INCREMENT,
+CREATE TABLE public.computer (
+	id SERIAL,
     name VARCHAR(255),
-	PRIMARY KEY (id)
-) CHARACTER SET utf8
-  COLLATE utf8mb3_general_ci;
+	CONSTRAINT computer_pk PRIMARY KEY (id)
+);
 
 -- copied from Wikipedia section on computer models
-INSERT INTO paging.computer (name) VALUES
+INSERT INTO public.computer (name) VALUES
     ('Commodore 64'),
     ('Altair 8800'),
     ('Apple I and also Replica 1'),

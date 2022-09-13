@@ -1,31 +1,28 @@
 package sql
 
 import (
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
+	"context"
+	"github.com/jackc/pgx/v4"
 )
 
 var (
-	db *sqlx.DB
+	db *pgx.Conn
 )
 
-func connectToMySQL() (*sqlx.DB, error) {
-	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/paging")
+func connectToPostgres(ctx context.Context) (*pgx.Conn, error) {
+	db, err := pgx.Connect(ctx, "postgres://postgres:password@localhost:5432/postgres")
 	if err != nil {
 		return nil, err
 	}
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(5)
-	return sqlx.NewDb(db, "sql-o"), nil
+	return db, nil
 }
 
-func Init() error {
+func Init(ctx context.Context) error {
 	var err error
-	db, err = connectToMySQL()
+	db, err = connectToPostgres(ctx)
 	return err
 }
 
-func Close() error {
-	return db.Close()
+func Close(ctx context.Context) error {
+	return db.Close(ctx)
 }

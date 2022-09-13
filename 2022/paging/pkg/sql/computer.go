@@ -3,12 +3,12 @@ package sql
 import (
 	"context"
 	"github.com/crnkofe/blog/2022/paging/pkg/paging"
-	"github.com/jmoiron/sqlx"
-
+	"github.com/georgysavva/scany/pgxscan"
+	"github.com/jackc/pgx/v4"
 )
 
 type computer struct {
-	db sqlx.ExtContext
+	db *pgx.Conn
 }
 
 func Computer() computer {
@@ -19,10 +19,6 @@ func Computer() computer {
 
 func (c *computer) GetPaged(ctx context.Context, lastID int, limit int) ([]paging.Computer, error) {
 	computers := []paging.Computer{}
-	err := sqlx.SelectContext(ctx, c.db, &computers,
-		"SELECT * FROM computer WHERE id > ? ORDER BY id LIMIT ?", lastID, limit)
-	if err != nil {
-		return []paging.Computer{}, err
-	}
+	err := pgxscan.Select(ctx, c.db, &computers, "SELECT id, name FROM computer WHERE id > $1 ORDER BY id LIMIT $2", lastID, limit)
 	return computers, err
 }

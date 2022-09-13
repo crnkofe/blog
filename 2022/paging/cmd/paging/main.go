@@ -12,19 +12,18 @@ func main() {
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
 	ctx := context.Background()
-	err := sql.Init()
+	err := sql.Init(ctx)
 	if err != nil {
 		log.Fatal().Msg("could not connect to DB. Make sure the sample DB is running")
 	}
 	defer func() {
-		err := sql.Close()
+		err := sql.Close(ctx)
 		if err != nil {
 			log.Fatal().Err(err).Msg("failed cleaning up SQL")
 		}
 	}()
 
 	PrintAllComputers(ctx)
-
 }
 
 func PrintAllComputers(ctx context.Context) {
