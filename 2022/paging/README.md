@@ -7,7 +7,7 @@ This project demonstrates DB cursor paging in Golang.
 ```bash
 make
 make docker-up
-# docker compose up will take a few moments to pull containers, run MySQL and run a migration
+# docker compose up will take a few moments to pull containers, run PostgreSQL and run a migration
 # afterwards just run the binary
 ./paging
 ```
@@ -19,16 +19,17 @@ make docker-up
 * [Docker 2 (uses new `docker compose` instead of `docker-compose`)](https://github.com/docker/compose)
 * (optional) [golangci-lint](https://golangci-lint.run/)
 
-## Connect to MySQL in Docker
+## Connect to Postgres in Docker
 
 Execute the following and when asked for password input password.
 ```bash
-docker exec -it paging-db-1 mysql -u root -p paging
+docker exec -it paging-db-1 psql -U postgres -W
+# enter 'password'
 ```
 
-Once in MySQL prompt selecting from `computer` table show yield some data.
+Once in Postgres prompt query from `computer` table to check the data:
 ```
-mysql> SELECT * FROM computer LIMIT 5;
+postgres=# SELECT * FROM computer LIMIT 5;
 +----+----------------------------------------+
 | id | name                                   |
 +----+----------------------------------------+

@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	// using number to make output less verbose
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
 	ctx := context.Background()
@@ -31,20 +33,23 @@ func PrintAllComputers(ctx context.Context) {
 
 	lastID := 0
 	page := 0
+	limit := 10
 	for {
-		pagedComputers, err := comp.GetPaged(ctx, lastID, 10)
+		pagedComputers, err := comp.GetPaged(ctx, lastID, limit)
 		if err != nil {
 			log.Info().Err(err).Msg("failed getting computers")
 		}
 
-		if len(pagedComputers) == 0 {
-			break
-		}
-		lastID = pagedComputers[len(pagedComputers)-1].ID
 		log.Info().Msgf("Paged computers - page: %d", page)
 		for _, comp := range pagedComputers {
 			log.Info().Msg(comp.String())
 		}
+
+		if len(pagedComputers) < limit {
+			break
+		}
+		lastID = pagedComputers[len(pagedComputers)-1].ID
+
 		page++
 	}
 }

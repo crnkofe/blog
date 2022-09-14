@@ -3,8 +3,8 @@ package paging
 import "fmt"
 
 type Computer struct {
-	ID   int    `sql:"id"`
-	Name string `sql:"name"`
+	ID   int
+	Name string
 }
 
 func (c Computer) String() string {
